@@ -1,12 +1,13 @@
 import requests
-
+import allure
 from faker import Faker
 from data import Endpoints
 
 
 class CreateRandomUser:
     @staticmethod
-    def create_random_user():       # создание пользователя
+    @allure.step("Создание случайного пользователя")
+    def create_random_user():
         faker = Faker('ru_RU')
         user = {
             'email': faker.email(),
@@ -16,7 +17,8 @@ class CreateRandomUser:
         return user
 
     @staticmethod
-    def create_random_user_without_email():         # создание пользователя без email
+    @allure.step("Создание случайного пользователя без email")
+    def create_random_user_without_email():
         faker = Faker('ru_RU')
         user = {
             'email': '',
@@ -26,7 +28,8 @@ class CreateRandomUser:
         return user
 
     @staticmethod
-    def create_random_user_without_password():      # создание пользователя без пароля
+    @allure.step("Создание случайного пользователя без пароля")
+    def create_random_user_without_password():
         faker = Faker('ru_RU')
         user = {
             'email': faker.email(),
@@ -36,7 +39,8 @@ class CreateRandomUser:
         return user
 
     @staticmethod
-    def create_random_user_without_name():       # создание пользователя без имени
+    @allure.step("Создание случайного пользователя без имени")
+    def create_random_user_without_name():
         faker = Faker('ru_RU')
         user = {
             'email': faker.email(),
@@ -46,7 +50,8 @@ class CreateRandomUser:
         return user
 
     @staticmethod
-    def create_random_user_without_data():       # создание пользователя без данных
+    @allure.step("Создание случайного пользователя без данных")
+    def create_random_user_without_data():
         user = {
             'email': '',
             'password': '',
@@ -55,7 +60,7 @@ class CreateRandomUser:
         return user
 
 
-class User:                                     # создание пользователя
+class User:
     valid_user = CreateRandomUser.create_random_user()
     invalid_user_without_email = CreateRandomUser.create_random_user_without_email()
     invalid_user_without_password = CreateRandomUser.create_random_user_without_password()
@@ -65,13 +70,14 @@ class User:                                     # создание пользо�
 
 class RegisterLoginDeleteUser:
     @staticmethod
-    def register_user():                        # регистрация пользователя
+    @allure.step("Регистрация пользователя")
+    def register_user():
         valid_user = User.valid_user
         response = requests.post(f'{Endpoints.USER_REGISTER_URL}', data=valid_user)
         return {'response_text': response.text, 'status_code': response.status_code, 'data_user': valid_user}
 
 
-class LaiUser:                                  # несуществующий пользователь
+class LaiUser:
     lai_user = {
         'email': 'akkakiy@gmailcom',
         'password': 'Zaq12wsxcde34rfv',
@@ -79,8 +85,9 @@ class LaiUser:                                  # несуществующий �
     }
 
 
-class GetIngredients:                           # получение списка ингредиентов
+class GetIngredients:
     @staticmethod
+    @allure.step("Получение списка ингредиентов")
     def get_ingredients(limit=4):
         response = requests.get(f'{Endpoints.INGREDIENTS_URL}')
         ingredients = response.json()['data']
